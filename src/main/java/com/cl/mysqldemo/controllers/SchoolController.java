@@ -34,5 +34,4 @@ public class SchoolController {
         return schoolService.getAllSchools();
     }
 
-
 }
