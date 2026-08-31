@@ -45,4 +45,7 @@ public class SchoolController {
                                @RequestParam String location) {
        return schoolService.updateSchool(id, name, location);
     }
+
+
+
 }
