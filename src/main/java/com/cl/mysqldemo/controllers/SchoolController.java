@@ -4,12 +4,10 @@ package com.cl.mysqldemo.controllers;
 import com.cl.mysqldemo.entities.School;
 import com.cl.mysqldemo.services.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("School")
@@ -30,4 +28,11 @@ public class SchoolController {
     public Long addSchool(@RequestParam String schoolName, @RequestParam String location) {
         return schoolService.createSchool(schoolName, location);
     }
+
+    @GetMapping("getAll")
+    public List<School> getAllSchool() {
+        return schoolService.getAllSchools();
+    }
+
+
 }
