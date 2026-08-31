@@ -1,4 +1,9 @@
 package com.cl.mysqldemo.repositories;
 
-public interface SchoolRepository {
+import com.cl.mysqldemo.entities.School;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SchoolRepository extends JpaRepository<School, Long> {
+
+
 }
