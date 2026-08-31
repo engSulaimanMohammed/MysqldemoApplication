@@ -34,4 +34,8 @@ public class SchoolController {
         return schoolService.getAllSchools();
     }
 
+    @GetMapping("getById")
+    public School gerById(@RequestParam Long id) {
+        return schoolService.getById(id);
+    }
 }
