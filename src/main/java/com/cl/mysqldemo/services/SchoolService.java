@@ -50,6 +50,14 @@ public class SchoolService {
 
 
     public School updateSchool(Long id, String name, String location) {
-        School
+        School schoolToUpdate = schoolRepository.getById(id);
+        if (schoolToUpdate == null) {
+            return new School();
+        }
+        schoolToUpdate.setUpdatedDate(new Date());
+        schoolToUpdate.setName(name);
+        schoolToUpdate.setLocation(location);
+        schoolToUpdate = schoolRepository.save(schoolToUpdate);
+        return schoolToUpdate;
     }
 }
