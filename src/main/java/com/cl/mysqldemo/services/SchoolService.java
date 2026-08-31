@@ -47,4 +47,9 @@ public class SchoolService {
         }
         return new School();
     }
+
+
+    public School updateSchool(Long id, String name, String location) {
+        School
+    }
 }
