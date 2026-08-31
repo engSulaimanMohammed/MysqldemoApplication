@@ -38,4 +38,11 @@ public class SchoolController {
     public School gerById(@RequestParam Long id) {
         return schoolService.getById(id);
     }
+
+    @GetMapping("update")
+    public School updateSchool(@RequestParam Long id,
+                               @RequestParam String name,
+                               @RequestParam String location) {
+       return schoolService.updateSchool(id, name, location);
+    }
 }
