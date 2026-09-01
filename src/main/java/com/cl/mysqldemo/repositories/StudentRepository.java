@@ -7,10 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository  // connect Student with data base by using JPA.
 public interface StudentRepository extends JpaRepository<Student, Long> {
-
-
-
-
-
-
 }

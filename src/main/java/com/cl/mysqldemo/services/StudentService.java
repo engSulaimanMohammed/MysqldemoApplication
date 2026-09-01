@@ -21,6 +21,12 @@ public class StudentService {
 
 
     @Autowired
+    public StudentService(SchoolService schoolService, StudentRepository studentRepository, SchoolRepository schoolRepository) {
+        this.schoolService = schoolService;
+        this.studentRepository = studentRepository;
+        this.schoolRepository = schoolRepository;
+    }
+
 
     public Long addStudent(String name, String majar, String gender,
                            String phoneNumber, String parentName, Long schoolId) {

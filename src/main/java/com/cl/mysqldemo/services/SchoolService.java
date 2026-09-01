@@ -27,11 +27,8 @@ public class SchoolService {
         school.setCreatedDate(new Date());
         school.setName(name);
         school.setLocation(location);
-
         school = schoolRepository.save(school); // To save school info in database.
-
         return school.getId();
-
     }
 
 
@@ -60,8 +57,6 @@ public class SchoolService {
         schoolToUpdate = schoolRepository.save(schoolToUpdate);
         return schoolToUpdate;
     }
-
-
 
 
     public Boolean deleteById(Long id) {
