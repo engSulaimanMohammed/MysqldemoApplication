@@ -24,9 +24,13 @@ public class StudentController {
 
     @PostMapping("add")
     public Long addStudent(
-            RequestParam
-    )
-
-
-    public Long addStudent() {}
+            @RequestParam String name,
+            @RequestParam String major,
+            @RequestParam String gender,
+            @RequestParam String phoneNumber,
+            @RequestParam String parentName,
+            @RequestParam Long schoolId
+    ) {
+        return studentService.addStudent(name, major, gender, phoneNumber, parentName, schoolId);
+    }
 }
