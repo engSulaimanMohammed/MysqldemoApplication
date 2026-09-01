@@ -24,8 +24,8 @@ public class Student {
     private String phoneNumber;
     private String parentName;
 
-    @ManyToOne // relationship between student and school.
-    private School school; // // relationship between student and school.
+   /* @ManyToOne // relationship between student and school.
+    private School school; // // relationship between student and school.*/
 
     private Boolean isActive;
     private Date createdDate;
