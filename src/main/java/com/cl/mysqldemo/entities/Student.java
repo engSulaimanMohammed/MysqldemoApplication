@@ -26,6 +26,9 @@ public class Student {
     private String gender;
     private String phoneNumber;
     private String parentName;
+
+    private School school;
+
     private Boolean isActive;
     private Date createdDate;
     private Date updatedDate;
