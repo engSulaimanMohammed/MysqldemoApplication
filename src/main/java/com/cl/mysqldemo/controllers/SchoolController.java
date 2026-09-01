@@ -24,14 +24,17 @@ public class SchoolController {
 
 
 
+
+
     @PostMapping("add")
     public Long addSchool(@RequestParam String schoolName, @RequestParam String location) {
         return schoolService.createSchool(schoolName, location);
     }
 
     @GetMapping("getAll")
-    public List<School> getAllSchool() {
-        return schoolService.getAllSchools();
+    public List<School> getAllSchools() {
+        List<School> schools = schoolService.getAllSchools();
+        return schools;
     }
 
     @GetMapping("getById")
@@ -51,7 +54,4 @@ public class SchoolController {
     public Boolean deleteSchool(@RequestParam Long id) {
         return schoolService.deleteById(id);
     }
-
-
-
 }

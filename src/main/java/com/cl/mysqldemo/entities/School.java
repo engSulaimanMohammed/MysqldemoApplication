@@ -17,7 +17,7 @@ public class School {
     private String name;
     private String location;
 
-    @OneToMany  // relationship between student and school.
+    @OneToMany(cascade = CascadeType.ALL)  // relationship between student and school.
     List<Student> students;  // relationship between student and school.
 
     private Boolean isActive;
