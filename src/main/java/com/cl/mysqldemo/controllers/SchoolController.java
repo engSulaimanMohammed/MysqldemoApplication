@@ -1,6 +1,7 @@
 package com.cl.mysqldemo.controllers;
 
 
+import com.cl.mysqldemo.dto.SchoolDTO;
 import com.cl.mysqldemo.entities.School;
 import com.cl.mysqldemo.services.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,14 @@ public class SchoolController {
     }
 
     @GetMapping("getAll")
-    public List<School> getAllSchools() {
-        List<School> schools = schoolService.getAllSchools();
+    public List<SchoolDTO> getAllSchools() {
+        List<SchoolDTO> schools = SchoolDTO.convertToDTO(schoolService.getAllSchools());
         return schools;
     }
 
     @GetMapping("getById")
-    public School gerById(@RequestParam Long id) {
-        return schoolService.getById(id);
+    public SchoolDTO gerById(@RequestParam Long id) {
+        return SchoolDTO.convertToDTO(schoolService.getById(id));
     }
 
     @GetMapping("update")
