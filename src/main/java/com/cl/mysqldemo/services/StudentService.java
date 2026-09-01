@@ -47,7 +47,7 @@ public class StudentService {
         Student saveStudent= studentRepository.save(student);
 
         List<Student> studentList = school.getStudents();
-        studentList.add(savedStudent);
+        studentList.add(saveStudent);
         school.setStudents(studentList);
         schoolRepository.save(school);
         return saveStudent.getId();
