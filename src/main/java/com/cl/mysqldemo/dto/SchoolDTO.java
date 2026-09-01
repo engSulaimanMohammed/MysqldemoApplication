@@ -21,7 +21,7 @@ public class SchoolDTO {
 
 
 
-    static SchoolDTO convertToDTO(School entity) {
+    public static SchoolDTO convertToDTO(School entity) {
         SchoolDTO dto = SchoolDTO.builder()
                 .schoolId(entity.getId())
                 .schoolName(entity.getName())

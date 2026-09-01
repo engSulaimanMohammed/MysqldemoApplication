@@ -43,11 +43,11 @@ public class SchoolController {
         return SchoolDTO.convertToDTO(schoolService.getById(id));
     }
 
-    @GetMapping("update")
-    public School updateSchool(@RequestParam Long id,
+    @PutMapping("update")
+    public SchoolDTO updateSchool(@RequestParam Long id,
                                @RequestParam String name,
                                @RequestParam String location) {
-       return schoolService.updateSchool(id, name, location);
+       return SchoolDTO.convertToDTO(schoolService.updateSchool(id, name, location));
     }
 
 
