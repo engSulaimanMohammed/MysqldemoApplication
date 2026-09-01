@@ -17,8 +17,8 @@ public class School {
     private String name;
     private String location;
 
-    @OneToMany
-    List<Student> students;
+    @OneToMany  // relationship between student and school.
+    List<Student> students;  // relationship between student and school.
 
     private Boolean isActive;
     private Date createdDate;

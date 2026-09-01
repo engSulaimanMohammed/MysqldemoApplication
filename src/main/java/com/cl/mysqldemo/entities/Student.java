@@ -1,9 +1,6 @@
 package com.cl.mysqldemo.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +24,8 @@ public class Student {
     private String phoneNumber;
     private String parentName;
 
-    private School school;
+    @ManyToOne // relationship between student and school.
+    private School school; // // relationship between student and school.
 
     private Boolean isActive;
     private Date createdDate;
