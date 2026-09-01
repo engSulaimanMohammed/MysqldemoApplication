@@ -28,19 +28,16 @@ public class StudentService {
     }
 
 
-    public Long addStudent(String name, String majar, String gender,
+    public Long addStudent(String name, String major, String gender,
                            String phoneNumber, String parentName, Long schoolId) {
-
-
         School school = schoolService.getById(schoolId);
-
-        if (school == null || school.getIsActive() == false) {
+        if(school == null || school.getIsActive() == false){
             return -1l;
         }
 
         Student student = new Student();
         student.setName(name);
-        student.setMajor(majar);
+        student.setMajor(major);
         student.setGender(gender);
         student.setPhoneNumber(phoneNumber);
         student.setParentName(parentName);
