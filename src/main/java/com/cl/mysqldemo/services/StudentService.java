@@ -88,6 +88,21 @@ public class StudentService {
         return studentToUpdate;
     }
 
+    // Delete student by using ID.
+    public Boolean deleteById(Long id) {
+        Student studentToUpdate = studentRepository.getById(id);
+        if (studentToUpdate == null) {
+            return false;
+        }
+        studentToUpdate.setIsActive(false);
+        studentToUpdate.setUpdatedDate(new Date());
+        studentRepository.save(studentToUpdate);
+        return true;
+    }
+
+
+
+
 
 
 
