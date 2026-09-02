@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -58,6 +59,22 @@ public class StudentService {
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
+
+
+    // To get student by ID.
+    public Student getById(Long id) {
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent() && student.get().getIsActive()) {
+            return student.get();
+        }
+        return new Student();
+    }
+
+
+
+
+
+
 
 
 
