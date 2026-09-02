@@ -48,6 +48,24 @@ public class StudentController {
     }
 
 
+    @PutMapping("update")
+    public StudentDTO updateStudent(@RequestParam Long id,
+                                    @RequestParam String name,
+                                    @RequestParam String major,
+                                    @RequestParam String gender,
+                                    @RequestParam String phoneNumber,
+                                    @RequestParam String parentName) {
+        return StudentDTO.convertToDTO(
+                studentService.updateStudent(id, name, major, gender, phoneNumber, parentName)
+        );
+    }
+
+
+
+
+
+
+
 
 
 
