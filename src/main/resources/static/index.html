@@ -8,6 +8,7 @@
     <title>EduCore School Dashboard</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -381,6 +382,7 @@
                 width: 100%;
             }
         }
+
     </style>
 </head>
 
@@ -663,6 +665,10 @@
 
     // =============================================
     // Display Schools inside Table.
+    // SchoolDTO fields:
+    // schoolId
+    // schoolName
+    // schoolLocation
     // =============================================
 
     function displaySchools(schools) {
@@ -691,43 +697,34 @@
 
         schools.forEach(school => {
 
-            let statusClass = school.isActive
-                ? "active-status"
-                : "inactive-status";
-
-            let statusText = school.isActive
-                ? "Active"
-                : "Inactive";
-
-
             tableBody.innerHTML += `
 
                 <tr>
 
                     <td>
-                        ${school.id}
+                        ${school.schoolId}
                     </td>
 
                     <td>
                         <strong>
-                            ${school.name}
+                            ${school.schoolName}
                         </strong>
                     </td>
 
                     <td>
-                        ${school.location}
+                        ${school.schoolLocation}
                     </td>
 
                     <td>
 
-                        <span class="status ${statusClass}">
-                            ${statusText}
+                        <span class="status active-status">
+                            Active
                         </span>
 
                     </td>
 
                     <td>
-                        ${formatDate(school.createdDate)}
+                        -
                     </td>
 
                     <td>
@@ -735,9 +732,9 @@
                         <button
                                 class="action-button edit-button"
                                 onclick="openUpdateModal(
-                                    ${school.id},
-                                    '${escapeQuotes(school.name)}',
-                                    '${escapeQuotes(school.location)}'
+                                    ${school.schoolId},
+                                    '${escapeQuotes(school.schoolName)}',
+                                    '${escapeQuotes(school.schoolLocation)}'
                                 )">
 
                             Edit
@@ -746,7 +743,7 @@
 
                         <button
                                 class="action-button delete-button"
-                                onclick="deleteSchool(${school.id})">
+                                onclick="deleteSchool(${school.schoolId})">
 
                             Delete
 
@@ -838,7 +835,7 @@
 
     // =============================================
     // Update School.
-    // @GetMapping("update")
+    // @PutMapping("update")
     // =============================================
 
     async function updateSchool() {
@@ -866,7 +863,11 @@
 
             const response = await fetch(
 
-                `${baseUrl}/update?id=${id}&name=${encodeURIComponent(name)}&location=${encodeURIComponent(location)}`
+                `${baseUrl}/update?id=${id}&name=${encodeURIComponent(name)}&location=${encodeURIComponent(location)}`,
+
+                {
+                    method: "PUT"
+                }
 
             );
 
@@ -880,7 +881,7 @@
                 await response.json();
 
 
-            if (school.id == null) {
+            if (school.schoolId == null) {
 
                 document.getElementById("updateMessage").innerHTML =
                     '<div class="message">School not found.</div>';
@@ -986,14 +987,14 @@
             allSchools.filter(school => {
 
                 const name =
-                    school.name == null
+                    school.schoolName == null
                         ? ""
-                        : school.name.toLowerCase();
+                        : school.schoolName.toLowerCase();
 
                 const location =
-                    school.location == null
+                    school.schoolLocation == null
                         ? ""
-                        : school.location.toLowerCase();
+                        : school.schoolLocation.toLowerCase();
 
 
                 return name.includes(searchValue)
@@ -1017,14 +1018,10 @@
             allSchools.length;
 
 
-        const activeCount =
-            allSchools.filter(
-                school => school.isActive === true
-            ).length;
-
-
+        // SchoolDTO does not currently contain isActive,
+        // so all returned Schools are counted as Active.
         document.getElementById("activeSchools").innerText =
-            activeCount;
+            allSchools.length;
 
 
         const locations =
@@ -1033,10 +1030,12 @@
 
         allSchools.forEach(school => {
 
-            if (school.location != null) {
+            if (school.schoolLocation != null) {
+
                 locations.add(
-                    school.location.toLowerCase()
+                    school.schoolLocation.toLowerCase()
                 );
+
             }
 
         });
@@ -1106,17 +1105,6 @@
     // =============================================
     // Helper functions.
     // =============================================
-
-    function formatDate(date) {
-
-        if (date == null) {
-            return "-";
-        }
-
-        return new Date(date).toLocaleDateString();
-
-    }
-
 
     function escapeQuotes(value) {
 

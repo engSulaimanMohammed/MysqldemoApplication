@@ -15,4 +15,12 @@ public class StudentDTO {
     private String schoolLocation;
 
 
+
+    public static StudentDTO
+
+
+
+
+
+
 }
