@@ -42,6 +42,13 @@ public class StudentController {
         return students;
     }
 
+    @GetMapping("getById")
+    public StudentDTO getById(@RequestParam Long id) {
+        return StudentDTO.convertToDTO(studentService.getById(id));
+    }
+
+
+
 
 
 
