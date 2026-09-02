@@ -61,13 +61,10 @@ public class StudentController {
     }
 
 
-
-
-
-
-
-
-
+    @DeleteMapping("delete")
+    public Boolean deleteStudent(@RequestParam Long id) {
+        return studentService.deleteById(id);
+    }
 
 
 
