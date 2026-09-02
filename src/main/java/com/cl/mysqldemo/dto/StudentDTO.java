@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -25,6 +28,15 @@ public class StudentDTO {
                 .schoolLocation(entity.getSchool().getLocation())
                 .build();
         return dto;
+    }
+
+
+    public static List<StudentDTO> convertToDTO(List<Student> entityList) {
+        List<StudentDTO> dtos = new ArrayList<>();
+        for (Student s : entityList) {
+            dtos.add(convertToDTO(s));
+        }
+        return dtos;
     }
 
 
