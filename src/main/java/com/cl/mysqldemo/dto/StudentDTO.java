@@ -19,7 +19,7 @@ public class StudentDTO {
     private String schoolLocation;
 
 
-
+    // Using for one student.
     public static StudentDTO convertToDTO(Student entity) {
 
         StudentDTO dto = StudentDTO.builder()
@@ -31,6 +31,7 @@ public class StudentDTO {
     }
 
 
+    // Using for many Student.
     public static List<StudentDTO> convertToDTO(List<Student> entityList) {
         List<StudentDTO> dtos = new ArrayList<>();
         for (Student s : entityList) {

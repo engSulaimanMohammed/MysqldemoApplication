@@ -52,4 +52,13 @@ public class StudentService {
         return saveStudent.getId();
 
     }
+
+
+    // To get all students from database.
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+
+
 }
