@@ -42,6 +42,7 @@ public class StudentService {
         student.setGender(gender);
         student.setPhoneNumber(phoneNumber);
         student.setParentName(parentName);
+        student.setSchool(school);
         student.setIsActive(true);
         student.setCreatedDate(new Date());
         Student saveStudent= studentRepository.save(student);
