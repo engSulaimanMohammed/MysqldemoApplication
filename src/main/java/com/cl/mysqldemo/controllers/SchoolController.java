@@ -44,8 +44,10 @@ public class SchoolController {
     }
 
     @PutMapping("update")
-    public SchoolDTO updateSchool(@RequestBody Long id) {
-       return SchoolDTO.convertToDTO(schoolService.updateSchool(, name, location));
+    public SchoolDTO updateSchool(@Valid @RequestBody SchoolDTO dto) {
+        return SchoolDTO.convertToDTO(schoolService.updateSchool(dto.getSchoolId(),
+                dto.getSchoolName(),
+                dto.getSchoolLocation()));
     }
 
 
