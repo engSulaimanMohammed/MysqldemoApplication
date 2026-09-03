@@ -58,7 +58,7 @@ public class StudentService {
 
     // To get all students from database.
     public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+        return studentRepository.getAllStudent();
     }
 
 

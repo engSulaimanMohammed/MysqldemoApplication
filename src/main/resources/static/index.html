@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>EduCore School Dashboard</title>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,7 +26,6 @@
         /* =========================
            Sidebar
         ========================= */
-
         .sidebar {
             width: 240px;
             background-color: #111827;
@@ -79,7 +75,6 @@
         /* =========================
            Main
         ========================= */
-
         .main {
             margin-left: 240px;
             width: calc(100% - 240px);
@@ -119,10 +114,9 @@
         /* =========================
            Stats
         ========================= */
-
         .stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 25px;
         }
@@ -157,10 +151,13 @@
             border-left: 5px solid #7c3aed;
         }
 
+        .orange {
+            border-left: 5px solid #f59e0b;
+        }
+
         /* =========================
            Card
         ========================= */
-
         .card {
             background-color: white;
             padding: 22px;
@@ -180,10 +177,13 @@
             font-size: 20px;
         }
 
+        .hidden {
+            display: none;
+        }
+
         /* =========================
            Search
         ========================= */
-
         .search-box {
             width: 300px;
             padding: 11px 13px;
@@ -199,7 +199,6 @@
         /* =========================
            Table
         ========================= */
-
         .table-wrapper {
             overflow-x: auto;
         }
@@ -239,15 +238,9 @@
             color: #15803d;
         }
 
-        .inactive-status {
-            background-color: #fee2e2;
-            color: #b91c1c;
-        }
-
         /* =========================
            Buttons
         ========================= */
-
         .action-button {
             border: none;
             padding: 7px 11px;
@@ -255,6 +248,11 @@
             cursor: pointer;
             margin-right: 5px;
             font-size: 12px;
+        }
+
+        .view-button {
+            background-color: #2563eb;
+            color: white;
         }
 
         .edit-button {
@@ -270,7 +268,6 @@
         /* =========================
            Modal
         ========================= */
-
         .modal {
             display: none;
             position: fixed;
@@ -279,6 +276,8 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
         }
 
         .modal-content {
@@ -293,13 +292,15 @@
             margin-bottom: 20px;
         }
 
-        .modal-content input {
+        .modal-content input,
+        .modal-content select {
             width: 100%;
             padding: 12px;
             margin-bottom: 12px;
             border: 1px solid #d1d5db;
             border-radius: 9px;
             outline: none;
+            background-color: white;
         }
 
         .modal-actions {
@@ -327,10 +328,6 @@
             cursor: pointer;
         }
 
-        /* =========================
-           Message
-        ========================= */
-
         .message {
             margin-top: 12px;
             padding: 10px;
@@ -339,12 +336,21 @@
             color: #1d4ed8;
         }
 
+        .student-details {
+            line-height: 2;
+            margin-bottom: 15px;
+        }
+
         /* =========================
            Responsive
         ========================= */
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
         @media (max-width: 900px) {
-
             .sidebar {
                 width: 80px;
             }
@@ -382,33 +388,38 @@
                 width: 100%;
             }
         }
-
     </style>
 </head>
 
 <body>
-
 <div class="app">
 
     <!-- Sidebar -->
     <aside class="sidebar">
-
         <div class="logo">
             Edu<span>Core</span>
         </div>
 
-        <button class="nav-link active" onclick="showDashboard()">
+        <button class="nav-link active" id="navDashboard" onclick="showDashboard()">
             🏠 Dashboard
         </button>
 
-        <button class="nav-link" onclick="loadSchools()">
+        <button class="nav-link" id="navSchools" onclick="showSchools()">
             🏫 Schools
         </button>
 
-        <button class="nav-link" onclick="openAddModal()">
+        <button class="nav-link" id="navAddSchool" onclick="openAddModal()">
             ➕ Add School
         </button>
 
+        <!-- Student navigation -->
+        <button class="nav-link" id="navStudents" onclick="showStudents()">
+            🎓 Students
+        </button>
+
+        <button class="nav-link" id="navAddStudent" onclick="openAddStudentModal()">
+            ➕ Add Student
+        </button>
     </aside>
 
 
@@ -416,319 +427,302 @@
     <main class="main">
 
         <div class="topbar">
-
             <div>
-                <h1>School Management Dashboard</h1>
-                <p>Manage all school records from one place.</p>
+                <h1 id="pageTitle">School Management Dashboard</h1>
+                <p id="pageDescription">Manage all school records from one place.</p>
             </div>
 
-            <button class="add-top-button" onclick="openAddModal()">
+            <button class="add-top-button" id="topActionButton" onclick="openAddModal()">
                 + Add New School
             </button>
-
         </div>
 
 
         <!-- Statistics -->
         <div class="stats">
-
             <div class="stat-card blue">
-
-                <div class="stat-title">
-                    Total Schools
-                </div>
-
-                <div class="stat-number" id="totalSchools">
-                    0
-                </div>
-
+                <div class="stat-title">Total Schools</div>
+                <div class="stat-number" id="totalSchools">0</div>
             </div>
-
 
             <div class="stat-card green">
-
-                <div class="stat-title">
-                    Active Schools
-                </div>
-
-                <div class="stat-number" id="activeSchools">
-                    0
-                </div>
-
+                <div class="stat-title">Active Schools</div>
+                <div class="stat-number" id="activeSchools">0</div>
             </div>
-
 
             <div class="stat-card purple">
-
-                <div class="stat-title">
-                    Locations
-                </div>
-
-                <div class="stat-number" id="totalLocations">
-                    0
-                </div>
-
+                <div class="stat-title">Locations</div>
+                <div class="stat-number" id="totalLocations">0</div>
             </div>
 
+            <div class="stat-card orange">
+                <div class="stat-title">Total Students</div>
+                <div class="stat-number" id="totalStudents">0</div>
+            </div>
         </div>
 
 
-        <!-- School Table -->
-        <div class="card">
+        <!-- School Section -->
+        <section id="schoolSection">
+            <div class="card">
+                <div class="card-header">
+                    <h2>School Directory</h2>
 
-            <div class="card-header">
+                    <input
+                            type="text"
+                            class="search-box"
+                            id="tableSearch"
+                            placeholder="Search by name or location..."
+                            onkeyup="filterSchools()">
+                </div>
 
-                <h2>School Directory</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>School Name</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
 
-                <input
-                        type="text"
-                        class="search-box"
-                        id="tableSearch"
-                        placeholder="Search by name or location..."
-                        onkeyup="filterSchools()">
-
+                        <tbody id="schoolTableBody">
+                        <tr>
+                            <td colspan="6">Loading schools...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </section>
 
 
-            <div class="table-wrapper">
+        <!-- Student Section -->
+        <section id="studentSection" class="hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Student Directory</h2>
 
-                <table>
+                    <input
+                            type="text"
+                            class="search-box"
+                            id="studentSearch"
+                            placeholder="Search by student or school..."
+                            onkeyup="filterStudents()">
+                </div>
 
-                    <thead>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student Name</th>
+                            <th>School Location</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
 
-                    <tr>
-                        <th>ID</th>
-                        <th>School Name</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Created Date</th>
-                        <th>Actions</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody id="schoolTableBody">
-
-                    <tr>
-                        <td colspan="6">
-                            Loading schools...
-                        </td>
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
+                        <tbody id="studentTableBody">
+                        <tr>
+                            <td colspan="4">Loading students...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-        </div>
+        </section>
 
     </main>
-
 </div>
 
 
-<!-- Add School Modal -->
+<!-- =============================================
+     Add School Modal
+============================================= -->
 <div class="modal" id="addModal">
-
     <div class="modal-content">
-
         <h2>Add New School</h2>
 
-        <input
-                type="text"
-                id="addSchoolName"
-                placeholder="School Name">
-
-        <input
-                type="text"
-                id="addLocation"
-                placeholder="Location">
+        <input type="text" id="addSchoolName" placeholder="School Name">
+        <input type="text" id="addLocation" placeholder="Location">
 
         <div id="addMessage"></div>
 
         <div class="modal-actions">
-
-            <button
-                    class="cancel-button"
-                    onclick="closeAddModal()">
-                Cancel
-            </button>
-
-            <button
-                    class="save-button"
-                    onclick="addSchool()">
-                Save School
-            </button>
-
+            <button class="cancel-button" onclick="closeAddModal()">Cancel</button>
+            <button class="save-button" onclick="addSchool()">Save School</button>
         </div>
-
     </div>
-
 </div>
 
 
-<!-- Update School Modal -->
+<!-- =============================================
+     Update School Modal
+============================================= -->
 <div class="modal" id="updateModal">
-
     <div class="modal-content">
-
         <h2>Update School</h2>
 
-        <input
-                type="number"
-                id="updateId"
-                placeholder="School ID"
-                readonly>
-
-        <input
-                type="text"
-                id="updateName"
-                placeholder="School Name">
-
-        <input
-                type="text"
-                id="updateLocation"
-                placeholder="Location">
+        <input type="number" id="updateId" placeholder="School ID" readonly>
+        <input type="text" id="updateName" placeholder="School Name">
+        <input type="text" id="updateLocation" placeholder="Location">
 
         <div id="updateMessage"></div>
 
         <div class="modal-actions">
+            <button class="cancel-button" onclick="closeUpdateModal()">Cancel</button>
+            <button class="save-button" onclick="updateSchool()">Update School</button>
+        </div>
+    </div>
+</div>
 
-            <button
-                    class="cancel-button"
-                    onclick="closeUpdateModal()">
-                Cancel
-            </button>
 
-            <button
-                    class="save-button"
-                    onclick="updateSchool()">
-                Update School
-            </button>
+<!-- =============================================
+     Add Student Modal
+============================================= -->
+<div class="modal" id="addStudentModal">
+    <div class="modal-content">
+        <h2>Add New Student</h2>
 
+        <input type="text" id="addStudentName" placeholder="Student Name">
+        <input type="text" id="addStudentMajor" placeholder="Major">
+        <input type="text" id="addStudentGender" placeholder="Gender">
+        <input type="text" id="addStudentPhoneNumber" placeholder="Phone Number">
+        <input type="text" id="addStudentParentName" placeholder="Parent Name">
+
+        <select id="addStudentSchoolId">
+            <option value="">Select School</option>
+        </select>
+
+        <div id="addStudentMessage"></div>
+
+        <div class="modal-actions">
+            <button class="cancel-button" onclick="closeAddStudentModal()">Cancel</button>
+            <button class="save-button" onclick="addStudent()">Save Student</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =============================================
+     View Student Modal
+============================================= -->
+<div class="modal" id="viewStudentModal">
+    <div class="modal-content">
+        <h2>Student Information</h2>
+
+        <div class="student-details">
+            <p><strong>Student ID:</strong> <span id="viewStudentId">-</span></p>
+            <p><strong>Student Name:</strong> <span id="viewStudentName">-</span></p>
+            <p><strong>School Location:</strong> <span id="viewStudentSchoolLocation">-</span></p>
         </div>
 
+        <div class="modal-actions">
+            <button class="cancel-button" onclick="closeViewStudentModal()">Close</button>
+        </div>
     </div>
+</div>
 
+
+<!-- =============================================
+     Update Student Modal
+============================================= -->
+<div class="modal" id="updateStudentModal">
+    <div class="modal-content">
+        <h2>Update Student</h2>
+
+        <input type="number" id="updateStudentId" placeholder="Student ID" readonly>
+        <input type="text" id="updateStudentName" placeholder="Student Name">
+        <input type="text" id="updateStudentMajor" placeholder="Major">
+        <input type="text" id="updateStudentGender" placeholder="Gender">
+        <input type="text" id="updateStudentPhoneNumber" placeholder="Phone Number">
+        <input type="text" id="updateStudentParentName" placeholder="Parent Name">
+
+        <div class="message">
+            Enter all student fields before updating.
+        </div>
+
+        <div id="updateStudentMessage"></div>
+
+        <div class="modal-actions">
+            <button class="cancel-button" onclick="closeUpdateStudentModal()">Cancel</button>
+            <button class="save-button" onclick="updateStudent()">Update Student</button>
+        </div>
+    </div>
 </div>
 
 
 <script>
+    // SchoolController: @RequestMapping("School")
+    const schoolBaseUrl = "/School";
 
-    // SchoolController:
-    // @RequestMapping("School")
-    const baseUrl = "/School";
+    // StudentController: @RequestMapping("student")
+    const studentBaseUrl = "/student";
 
     let allSchools = [];
+    let allStudents = [];
 
 
     // =============================================
     // Load all Schools.
-    // @GetMapping("getAll")
+    // GET /School/getAll
     // =============================================
-
     async function loadSchools() {
-
         try {
-
-            const response =
-                await fetch(`${baseUrl}/getAll`);
+            const response = await fetch(`${schoolBaseUrl}/getAll`);
 
             if (!response.ok) {
                 throw new Error("Could not load schools");
             }
 
-            allSchools =
-                await response.json();
+            allSchools = await response.json();
 
             displaySchools(allSchools);
-
+            populateSchoolOptions();
             updateStatistics();
 
         } catch (error) {
-
             document.getElementById("schoolTableBody").innerHTML = `
-
                 <tr>
-                    <td colspan="6">
-                        Error loading schools.
-                    </td>
+                    <td colspan="6">Error loading schools.</td>
                 </tr>
-
             `;
-
         }
-
     }
 
 
     // =============================================
     // Display Schools inside Table.
     // SchoolDTO fields:
-    // schoolId
-    // schoolName
-    // schoolLocation
+    // schoolId, schoolName, schoolLocation
     // =============================================
-
     function displaySchools(schools) {
-
-        const tableBody =
-            document.getElementById("schoolTableBody");
-
+        const tableBody = document.getElementById("schoolTableBody");
         tableBody.innerHTML = "";
 
-
         if (schools.length === 0) {
-
             tableBody.innerHTML = `
-
                 <tr>
-                    <td colspan="6">
-                        No schools found.
-                    </td>
+                    <td colspan="6">No schools found.</td>
                 </tr>
-
             `;
-
             return;
         }
 
-
         schools.forEach(school => {
-
             tableBody.innerHTML += `
-
                 <tr>
-
+                    <td>${school.schoolId}</td>
+                    <td><strong>${safeText(school.schoolName)}</strong></td>
+                    <td>${safeText(school.schoolLocation)}</td>
                     <td>
-                        ${school.schoolId}
+                        <span class="status active-status">Active</span>
                     </td>
-
+                    <td>-</td>
                     <td>
-                        <strong>
-                            ${school.schoolName}
-                        </strong>
-                    </td>
-
-                    <td>
-                        ${school.schoolLocation}
-                    </td>
-
-                    <td>
-
-                        <span class="status active-status">
-                            Active
-                        </span>
-
-                    </td>
-
-                    <td>
-                        -
-                    </td>
-
-                    <td>
-
                         <button
                                 class="action-button edit-button"
                                 onclick="openUpdateModal(
@@ -736,404 +730,731 @@
                                     '${escapeQuotes(school.schoolName)}',
                                     '${escapeQuotes(school.schoolLocation)}'
                                 )">
-
                             Edit
-
                         </button>
 
                         <button
                                 class="action-button delete-button"
                                 onclick="deleteSchool(${school.schoolId})">
-
                             Delete
-
                         </button>
-
                     </td>
-
                 </tr>
-
             `;
-
         });
-
     }
 
 
     // =============================================
     // Add School.
-    // @PostMapping("add")
+    // POST /School/add
     // =============================================
-
     async function addSchool() {
-
-        const schoolName =
-            document.getElementById("addSchoolName").value.trim();
-
-        const location =
-            document.getElementById("addLocation").value.trim();
-
+        const schoolName = document.getElementById("addSchoolName").value.trim();
+        const location = document.getElementById("addLocation").value.trim();
 
         if (schoolName === "" || location === "") {
-
             document.getElementById("addMessage").innerHTML =
                 '<div class="message">Please enter school name and location.</div>';
-
             return;
         }
 
-
         try {
+            const params = new URLSearchParams({
+                schoolName: schoolName,
+                location: location
+            });
 
             const response = await fetch(
-
-                `${baseUrl}/add?schoolName=${encodeURIComponent(schoolName)}&location=${encodeURIComponent(location)}`,
-
-                {
-                    method: "POST"
-                }
-
+                `${schoolBaseUrl}/add?${params.toString()}`,
+                {method: "POST"}
             );
-
 
             if (!response.ok) {
                 throw new Error("Could not add school");
             }
 
-
-            const id =
-                await response.text();
-
+            const id = await response.text();
 
             document.getElementById("addMessage").innerHTML =
-                `<div class="message">
-                    School created successfully. ID: ${id}
-                </div>`;
-
+                `<div class="message">School created successfully. ID: ${id}</div>`;
 
             document.getElementById("addSchoolName").value = "";
             document.getElementById("addLocation").value = "";
 
-
             await loadSchools();
-
 
             setTimeout(function () {
                 closeAddModal();
             }, 700);
 
-
         } catch (error) {
-
             document.getElementById("addMessage").innerHTML =
                 '<div class="message">Error adding school.</div>';
-
         }
-
     }
 
 
     // =============================================
     // Update School.
-    // @PutMapping("update")
+    // PUT /School/update
     // =============================================
-
     async function updateSchool() {
-
-        const id =
-            document.getElementById("updateId").value;
-
-        const name =
-            document.getElementById("updateName").value.trim();
-
-        const location =
-            document.getElementById("updateLocation").value.trim();
-
+        const id = document.getElementById("updateId").value;
+        const name = document.getElementById("updateName").value.trim();
+        const location = document.getElementById("updateLocation").value.trim();
 
         if (name === "" || location === "") {
-
             document.getElementById("updateMessage").innerHTML =
                 '<div class="message">Please complete all fields.</div>';
-
             return;
         }
 
-
         try {
+            const params = new URLSearchParams({
+                id: id,
+                name: name,
+                location: location
+            });
 
             const response = await fetch(
-
-                `${baseUrl}/update?id=${id}&name=${encodeURIComponent(name)}&location=${encodeURIComponent(location)}`,
-
-                {
-                    method: "PUT"
-                }
-
+                `${schoolBaseUrl}/update?${params.toString()}`,
+                {method: "PUT"}
             );
-
 
             if (!response.ok) {
                 throw new Error("Could not update school");
             }
 
-
-            const school =
-                await response.json();
-
+            const school = await response.json();
 
             if (school.schoolId == null) {
-
                 document.getElementById("updateMessage").innerHTML =
                     '<div class="message">School not found.</div>';
-
                 return;
             }
-
 
             document.getElementById("updateMessage").innerHTML =
                 '<div class="message">School updated successfully.</div>';
 
-
             await loadSchools();
-
 
             setTimeout(function () {
                 closeUpdateModal();
             }, 700);
 
-
         } catch (error) {
-
             document.getElementById("updateMessage").innerHTML =
                 '<div class="message">Error updating school.</div>';
-
         }
-
     }
 
 
     // =============================================
     // Delete School.
-    // @DeleteMapping("Delete")
+    // DELETE /School/Delete
     // =============================================
-
     async function deleteSchool(id) {
-
-        const confirmed =
-            confirm("Are you sure you want to delete this school?");
-
+        const confirmed = confirm("Are you sure you want to delete this school?");
 
         if (!confirmed) {
             return;
         }
 
-
         try {
-
             const response = await fetch(
-
-                `${baseUrl}/Delete?id=${id}`,
-
-                {
-                    method: "DELETE"
-                }
-
+                `${schoolBaseUrl}/Delete?id=${id}`,
+                {method: "DELETE"}
             );
-
 
             if (!response.ok) {
                 throw new Error("Could not delete school");
             }
 
-
-            const result =
-                await response.json();
-
+            const result = await response.json();
 
             if (result === true) {
-
                 alert("School deleted successfully.");
-
                 await loadSchools();
-
             } else {
-
                 alert("School could not be deleted.");
-
             }
 
         } catch (error) {
-
             alert("Error deleting school.");
-
         }
-
     }
 
 
     // =============================================
-    // Search inside loaded Schools.
+    // Search Schools.
     // =============================================
-
     function filterSchools() {
+        const searchValue = document.getElementById("tableSearch").value.toLowerCase();
 
-        const searchValue =
-            document.getElementById("tableSearch")
-                .value
-                .toLowerCase();
+        const filteredSchools = allSchools.filter(school => {
+            const name = school.schoolName == null
+                ? ""
+                : school.schoolName.toLowerCase();
 
+            const location = school.schoolLocation == null
+                ? ""
+                : school.schoolLocation.toLowerCase();
 
-        const filteredSchools =
-            allSchools.filter(school => {
-
-                const name =
-                    school.schoolName == null
-                        ? ""
-                        : school.schoolName.toLowerCase();
-
-                const location =
-                    school.schoolLocation == null
-                        ? ""
-                        : school.schoolLocation.toLowerCase();
-
-
-                return name.includes(searchValue)
-                    || location.includes(searchValue);
-
-            });
-
+            return name.includes(searchValue) || location.includes(searchValue);
+        });
 
         displaySchools(filteredSchools);
+    }
 
+
+    // =============================================
+    // Load all Students.
+    // GET /student/getAll
+    // =============================================
+    async function loadStudents() {
+        try {
+            const response = await fetch(`${studentBaseUrl}/getAll`);
+
+            if (!response.ok) {
+                throw new Error("Could not load students");
+            }
+
+            allStudents = await response.json();
+
+            displayStudents(allStudents);
+            updateStatistics();
+
+        } catch (error) {
+            document.getElementById("studentTableBody").innerHTML = `
+                <tr>
+                    <td colspan="4">Error loading students.</td>
+                </tr>
+            `;
+        }
+    }
+
+
+    // =============================================
+    // Display Students inside Table.
+    // StudentDTO fields:
+    // studentId, studentName, schoolLocation
+    // =============================================
+    function displayStudents(students) {
+        const tableBody = document.getElementById("studentTableBody");
+        tableBody.innerHTML = "";
+
+        if (students.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="4">No students found.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        students.forEach(student => {
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${student.studentId}</td>
+                    <td><strong>${safeText(student.studentName)}</strong></td>
+                    <td>${safeText(student.schoolLocation)}</td>
+                    <td>
+                        <button
+                                class="action-button view-button"
+                                onclick="viewStudent(${student.studentId})">
+                            View
+                        </button>
+
+                        <button
+                                class="action-button edit-button"
+                                onclick="openUpdateStudentModal(
+                                    ${student.studentId},
+                                    '${escapeQuotes(student.studentName)}'
+                                )">
+                            Edit
+                        </button>
+
+                        <button
+                                class="action-button delete-button"
+                                onclick="deleteStudent(${student.studentId})">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+
+    // =============================================
+    // Add Student.
+    // POST /student/add
+    // =============================================
+    async function addStudent() {
+        const name = document.getElementById("addStudentName").value.trim();
+        const major = document.getElementById("addStudentMajor").value.trim();
+        const gender = document.getElementById("addStudentGender").value.trim();
+        const phoneNumber = document.getElementById("addStudentPhoneNumber").value.trim();
+        const parentName = document.getElementById("addStudentParentName").value.trim();
+        const schoolId = document.getElementById("addStudentSchoolId").value;
+
+        if (
+            name === "" ||
+            major === "" ||
+            gender === "" ||
+            phoneNumber === "" ||
+            parentName === "" ||
+            schoolId === ""
+        ) {
+            document.getElementById("addStudentMessage").innerHTML =
+                '<div class="message">Please complete all student fields.</div>';
+            return;
+        }
+
+        try {
+            const params = new URLSearchParams({
+                name: name,
+                major: major,
+                gender: gender,
+                phoneNumber: phoneNumber,
+                parentName: parentName,
+                schoolId: schoolId
+            });
+
+            const response = await fetch(
+                `${studentBaseUrl}/add?${params.toString()}`,
+                {method: "POST"}
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not add student");
+            }
+
+            const id = await response.text();
+
+            if (id === "-1") {
+                document.getElementById("addStudentMessage").innerHTML =
+                    '<div class="message">School not found or inactive.</div>';
+                return;
+            }
+
+            document.getElementById("addStudentMessage").innerHTML =
+                `<div class="message">Student created successfully. ID: ${id}</div>`;
+
+            clearAddStudentForm();
+            await loadStudents();
+
+            setTimeout(function () {
+                closeAddStudentModal();
+            }, 700);
+
+        } catch (error) {
+            document.getElementById("addStudentMessage").innerHTML =
+                '<div class="message">Error adding student.</div>';
+        }
+    }
+
+
+    // =============================================
+    // Get Student by ID.
+    // GET /student/getById
+    // =============================================
+    async function viewStudent(id) {
+        try {
+            const response = await fetch(`${studentBaseUrl}/getById?id=${id}`);
+
+            if (!response.ok) {
+                throw new Error("Could not get student");
+            }
+
+            const student = await response.json();
+
+            if (student.studentId == null) {
+                alert("Student not found.");
+                return;
+            }
+
+            document.getElementById("viewStudentId").innerText =
+                student.studentId;
+
+            document.getElementById("viewStudentName").innerText =
+                student.studentName == null ? "-" : student.studentName;
+
+            document.getElementById("viewStudentSchoolLocation").innerText =
+                student.schoolLocation == null ? "-" : student.schoolLocation;
+
+            document.getElementById("viewStudentModal").style.display = "flex";
+
+        } catch (error) {
+            alert("Error loading student information.");
+        }
+    }
+
+
+    // =============================================
+    // Update Student.
+    // PUT /student/update
+    // =============================================
+    async function updateStudent() {
+        const id = document.getElementById("updateStudentId").value;
+        const name = document.getElementById("updateStudentName").value.trim();
+        const major = document.getElementById("updateStudentMajor").value.trim();
+        const gender = document.getElementById("updateStudentGender").value.trim();
+        const phoneNumber = document.getElementById("updateStudentPhoneNumber").value.trim();
+        const parentName = document.getElementById("updateStudentParentName").value.trim();
+
+        if (
+            name === "" ||
+            major === "" ||
+            gender === "" ||
+            phoneNumber === "" ||
+            parentName === ""
+        ) {
+            document.getElementById("updateStudentMessage").innerHTML =
+                '<div class="message">Please complete all student fields.</div>';
+            return;
+        }
+
+        try {
+            const params = new URLSearchParams({
+                id: id,
+                name: name,
+                major: major,
+                gender: gender,
+                phoneNumber: phoneNumber,
+                parentName: parentName
+            });
+
+            const response = await fetch(
+                `${studentBaseUrl}/update?${params.toString()}`,
+                {method: "PUT"}
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not update student");
+            }
+
+            const student = await response.json();
+
+            if (student.studentId == null) {
+                document.getElementById("updateStudentMessage").innerHTML =
+                    '<div class="message">Student not found.</div>';
+                return;
+            }
+
+            document.getElementById("updateStudentMessage").innerHTML =
+                '<div class="message">Student updated successfully.</div>';
+
+            await loadStudents();
+
+            setTimeout(function () {
+                closeUpdateStudentModal();
+            }, 700);
+
+        } catch (error) {
+            document.getElementById("updateStudentMessage").innerHTML =
+                '<div class="message">Error updating student.</div>';
+        }
+    }
+
+
+    // =============================================
+    // Delete Student.
+    // DELETE /student/delete
+    // =============================================
+    async function deleteStudent(id) {
+        const confirmed = confirm("Are you sure you want to delete this student?");
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${studentBaseUrl}/delete?id=${id}`,
+                {method: "DELETE"}
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not delete student");
+            }
+
+            const result = await response.json();
+
+            if (result === true) {
+                alert("Student deleted successfully.");
+
+                // Remove the deleted Student from the current table.
+                allStudents = allStudents.filter(
+                    student => student.studentId !== id
+                );
+
+                displayStudents(allStudents);
+                updateStatistics();
+
+            } else {
+                alert("Student could not be deleted.");
+            }
+
+        } catch (error) {
+            alert("Error deleting student.");
+        }
+    }
+
+
+    // =============================================
+    // Search Students.
+    // =============================================
+    function filterStudents() {
+        const searchValue = document.getElementById("studentSearch").value.toLowerCase();
+
+        const filteredStudents = allStudents.filter(student => {
+            const name = student.studentName == null
+                ? ""
+                : student.studentName.toLowerCase();
+
+            const location = student.schoolLocation == null
+                ? ""
+                : student.schoolLocation.toLowerCase();
+
+            return name.includes(searchValue) || location.includes(searchValue);
+        });
+
+        displayStudents(filteredStudents);
     }
 
 
     // =============================================
     // Dashboard statistics.
     // =============================================
-
     function updateStatistics() {
-
         document.getElementById("totalSchools").innerText =
             allSchools.length;
-
 
         // SchoolDTO does not currently contain isActive,
         // so all returned Schools are counted as Active.
         document.getElementById("activeSchools").innerText =
             allSchools.length;
 
-
-        const locations =
-            new Set();
-
+        const locations = new Set();
 
         allSchools.forEach(school => {
-
             if (school.schoolLocation != null) {
-
-                locations.add(
-                    school.schoolLocation.toLowerCase()
-                );
-
+                locations.add(school.schoolLocation.toLowerCase());
             }
-
         });
-
 
         document.getElementById("totalLocations").innerText =
             locations.size;
 
+        document.getElementById("totalStudents").innerText =
+            allStudents.length;
     }
 
 
     // =============================================
-    // Add Modal.
+    // Fill School list inside Add Student Modal.
     // =============================================
+    function populateSchoolOptions() {
+        const schoolSelect = document.getElementById("addStudentSchoolId");
+        schoolSelect.innerHTML = '<option value="">Select School</option>';
 
+        allSchools.forEach(school => {
+            schoolSelect.innerHTML += `
+                <option value="${school.schoolId}">
+                    ${safeText(school.schoolName)} - ${safeText(school.schoolLocation)}
+                </option>
+            `;
+        });
+    }
+
+
+    // =============================================
+    // Navigation.
+    // =============================================
+    function showDashboard() {
+        showSchoolSection();
+        setActiveNav("navDashboard");
+
+        document.getElementById("pageTitle").innerText =
+            "School Management Dashboard";
+
+        document.getElementById("pageDescription").innerText =
+            "Manage all school and student records from one place.";
+
+        setTopButton("+ Add New School", openAddModal);
+
+        window.scrollTo({top: 0, behavior: "smooth"});
+    }
+
+
+    function showSchools() {
+        showSchoolSection();
+        setActiveNav("navSchools");
+
+        document.getElementById("pageTitle").innerText =
+            "Schools";
+
+        document.getElementById("pageDescription").innerText =
+            "View and manage school records.";
+
+        setTopButton("+ Add New School", openAddModal);
+        loadSchools();
+    }
+
+
+    function showStudents() {
+        document.getElementById("schoolSection").classList.add("hidden");
+        document.getElementById("studentSection").classList.remove("hidden");
+
+        setActiveNav("navStudents");
+
+        document.getElementById("pageTitle").innerText =
+            "Students";
+
+        document.getElementById("pageDescription").innerText =
+            "View and manage student records.";
+
+        setTopButton("+ Add New Student", openAddStudentModal);
+        loadStudents();
+    }
+
+
+    function showSchoolSection() {
+        document.getElementById("studentSection").classList.add("hidden");
+        document.getElementById("schoolSection").classList.remove("hidden");
+    }
+
+
+    function setActiveNav(activeId) {
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        navLinks.forEach(link => {
+            link.classList.remove("active");
+        });
+
+        document.getElementById(activeId).classList.add("active");
+    }
+
+
+    function setTopButton(text, action) {
+        const button = document.getElementById("topActionButton");
+        button.innerText = text;
+        button.onclick = action;
+    }
+
+
+    // =============================================
+    // School Modals.
+    // =============================================
     function openAddModal() {
-
-        document.getElementById("addModal").style.display =
-            "flex";
-
-        document.getElementById("addMessage").innerHTML =
-            "";
-
+        document.getElementById("addModal").style.display = "flex";
+        document.getElementById("addMessage").innerHTML = "";
     }
 
 
     function closeAddModal() {
-
-        document.getElementById("addModal").style.display =
-            "none";
-
+        document.getElementById("addModal").style.display = "none";
     }
 
 
-    // =============================================
-    // Update Modal.
-    // =============================================
-
     function openUpdateModal(id, name, location) {
-
-        document.getElementById("updateId").value =
-            id;
-
-        document.getElementById("updateName").value =
-            name;
-
-        document.getElementById("updateLocation").value =
-            location;
-
-        document.getElementById("updateMessage").innerHTML =
-            "";
-
-        document.getElementById("updateModal").style.display =
-            "flex";
-
+        document.getElementById("updateId").value = id;
+        document.getElementById("updateName").value = name;
+        document.getElementById("updateLocation").value = location;
+        document.getElementById("updateMessage").innerHTML = "";
+        document.getElementById("updateModal").style.display = "flex";
     }
 
 
     function closeUpdateModal() {
+        document.getElementById("updateModal").style.display = "none";
+    }
 
-        document.getElementById("updateModal").style.display =
-            "none";
 
+    // =============================================
+    // Student Modals.
+    // =============================================
+    async function openAddStudentModal() {
+        if (allSchools.length === 0) {
+            await loadSchools();
+        }
+
+        populateSchoolOptions();
+        document.getElementById("addStudentMessage").innerHTML = "";
+        document.getElementById("addStudentModal").style.display = "flex";
+    }
+
+
+    function closeAddStudentModal() {
+        document.getElementById("addStudentModal").style.display = "none";
+    }
+
+
+    function closeViewStudentModal() {
+        document.getElementById("viewStudentModal").style.display = "none";
+    }
+
+
+    function openUpdateStudentModal(id, name) {
+        document.getElementById("updateStudentId").value = id;
+        document.getElementById("updateStudentName").value = name;
+
+        // StudentDTO currently returns only ID, name and school location.
+        // The other updated values are entered by the user.
+        document.getElementById("updateStudentMajor").value = "";
+        document.getElementById("updateStudentGender").value = "";
+        document.getElementById("updateStudentPhoneNumber").value = "";
+        document.getElementById("updateStudentParentName").value = "";
+        document.getElementById("updateStudentMessage").innerHTML = "";
+
+        document.getElementById("updateStudentModal").style.display = "flex";
+    }
+
+
+    function closeUpdateStudentModal() {
+        document.getElementById("updateStudentModal").style.display = "none";
+    }
+
+
+    function clearAddStudentForm() {
+        document.getElementById("addStudentName").value = "";
+        document.getElementById("addStudentMajor").value = "";
+        document.getElementById("addStudentGender").value = "";
+        document.getElementById("addStudentPhoneNumber").value = "";
+        document.getElementById("addStudentParentName").value = "";
+        document.getElementById("addStudentSchoolId").value = "";
     }
 
 
     // =============================================
     // Helper functions.
     // =============================================
-
     function escapeQuotes(value) {
-
         if (value == null) {
             return "";
         }
 
-        return value
+        return String(value)
             .replace(/\\/g, "\\\\")
             .replace(/'/g, "\\'");
-
     }
 
 
-    function showDashboard() {
+    function safeText(value) {
+        if (value == null || value === "") {
+            return "-";
+        }
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
+        return value;
     }
 
 
-    // Load schools automatically when page opens.
+    // Load data automatically when page opens.
     loadSchools();
-
+    loadStudents();
 </script>
 
 </body>
-
 </html>
