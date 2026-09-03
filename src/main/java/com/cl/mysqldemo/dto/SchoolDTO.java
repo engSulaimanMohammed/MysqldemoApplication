@@ -2,6 +2,9 @@ package com.cl.mysqldemo.dto;
 
 
 import com.cl.mysqldemo.entities.School;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -17,10 +20,15 @@ import java.util.List;
 public class SchoolDTO {
 
 
+    @Positive
     private Long schoolId;
 
-
+    @NotBlank(message = "School name cannot be blank")
+    @Size(min = 3, max = 20, message = "School name has to be between 3 and 20 characters")
     private String schoolName;
+
+    @NotBlank(message = "School location cannot be blank")
+    @Size(min = 10, max = 100, message = "School location has to be between 10 and 100 characters")
     private String schoolLocation;
 
 
