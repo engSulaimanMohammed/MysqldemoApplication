@@ -19,10 +19,34 @@ public class StudentDTO {
 
     @Positive(message = "Student ID can Not be Negative")
     private Long studentId;
+
     @NotBlank(message = "Student can not be blank")
-    @Size(min = 3, max = 20, message = "Student name must be")
+    @Size(min = 3, max = 20, message = "Student name must be between 3 and 100 characters")
     private String studentName;
+
+    @NotBlank(message = "Gender cannot be blank")
+    @Size(min = 4, max = 6, message = "Gender must not exceed 10 characters")
     private String schoolLocation;
+
+    @NotBlank(message = "Gender cannot be blank")
+    @Size(min = 4, max = 6, message = "Gender must be between 4 and 6 characters")
+    private String gender;
+
+    @NotBlank(message = "Phone number cannot be blank")
+    @Size(min = 8, max = 8, message = "Phone number must be 8 characters")
+    private String phoneNumber;
+
+    @NotBlank(message = "Parent name cannot be blank")
+    @Size(min = 3, max = 30, message = "Parent name must be between 3 and 30 characters")
+    private String parentName;
+
+    @NotBlank(message = "Major cannot be blank")
+    @Size(min = 2, max = 30, message = "Major must be between 2 and 30 characters")
+    private String major;
+
+    @Positive(message = "School ID must be positive")
+    private Long schoolId;
+
 
 
     // Using for one student.

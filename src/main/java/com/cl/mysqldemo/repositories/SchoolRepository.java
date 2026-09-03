@@ -17,8 +17,4 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
 
     @Query("SELECT s FROM School s WHERE s.isActive=true AND s.id=:id")
     School getById(@Param("id") Long id);
-
-
-
-
 }
