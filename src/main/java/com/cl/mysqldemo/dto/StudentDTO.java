@@ -2,6 +2,9 @@ package com.cl.mysqldemo.dto;
 
 
 import com.cl.mysqldemo.entities.Student;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +17,10 @@ import java.util.List;
 @Builder
 public class StudentDTO {
 
+    @Positive(message = "Student ID can Not be Negative")
     private Long studentId;
+    @NotBlank(message = "Student can not be blank")
+    @Size(min = 3, max = 20, message = "Student name must be")
     private String studentName;
     private String schoolLocation;
 

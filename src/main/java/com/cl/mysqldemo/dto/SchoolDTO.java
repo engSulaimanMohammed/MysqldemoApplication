@@ -3,6 +3,7 @@ package com.cl.mysqldemo.dto;
 
 import com.cl.mysqldemo.entities.School;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,10 +13,13 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Data
 public class SchoolDTO {
 
 
     private Long schoolId;
+
+
     private String schoolName;
     private String schoolLocation;
 
