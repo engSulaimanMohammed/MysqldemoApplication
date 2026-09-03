@@ -4,6 +4,7 @@ package com.cl.mysqldemo.controllers;
 import com.cl.mysqldemo.dto.StudentDTO;
 import com.cl.mysqldemo.services.SchoolService;
 import com.cl.mysqldemo.services.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,18 +23,18 @@ public class StudentController {
     }
 
 
+    // To add a new student.
     @PostMapping("add")
-    public Long addStudent(
-            @RequestParam String name,
-            @RequestParam String major,
-            @RequestParam String gender,
-            @RequestParam String phoneNumber,
-            @RequestParam String parentName,
-            @RequestParam Long schoolId
-    ) {
-        return studentService.addStudent(name, major, gender, phoneNumber, parentName, schoolId);
+    public Long addStudent(@Valid @RequestBody StudentDTO dto) {
+        return studentService.addStudent(
+                dto.getStudentName(),
+                dto.getMajor(),
+                dto.getGender(),
+                dto.getPhoneNumber(),
+                dto.getParentName(),
+                dto.getSchoolId()
+        );
     }
-
 
 
     @GetMapping("getAll")
@@ -42,21 +43,25 @@ public class StudentController {
         return students;
     }
 
+
     @GetMapping("getById")
     public StudentDTO getById(@RequestParam Long id) {
         return StudentDTO.convertToDTO(studentService.getById(id));
     }
 
 
+    // To update student information.
     @PutMapping("update")
-    public StudentDTO updateStudent(@RequestParam Long id,
-                                    @RequestParam String name,
-                                    @RequestParam String major,
-                                    @RequestParam String gender,
-                                    @RequestParam String phoneNumber,
-                                    @RequestParam String parentName) {
+    public StudentDTO updateStudent(@Valid @RequestBody StudentDTO dto) {
         return StudentDTO.convertToDTO(
-                studentService.updateStudent(id, name, major, gender, phoneNumber, parentName)
+                studentService.updateStudent(
+                        dto.getStudentId(),
+                        dto.getStudentName(),
+                        dto.getMajor(),
+                        dto.getGender(),
+                        dto.getPhoneNumber(),
+                        dto.getParentName()
+                )
         );
     }
 
@@ -65,8 +70,6 @@ public class StudentController {
     public Boolean deleteStudent(@RequestParam Long id) {
         return studentService.deleteById(id);
     }
-
-
 
 
 }
