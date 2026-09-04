@@ -33,7 +33,7 @@ public class SchoolService {
 
 
     public List<School> getAllSchools() {
-        return schoolRepository.findAll();
+        return schoolRepository.getAllSchool();
     }
 
 
