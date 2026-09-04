@@ -52,12 +52,14 @@ public class StudentDTO {
     // Using for one student.
     public static StudentDTO convertToDTO(Student entity) {
 
-        StudentDTO dto = StudentDTO.builder()
+        return StudentDTO.builder()
                 .studentId(entity.getId())
                 .studentName(entity.getName())
-                .schoolLocation(entity.getSchool().getLocation())
+                .gender(entity.getGender())
+                .phoneNumber(entity.getPhoneNumber())
+                .major(entity.getMajor())
+                .parentName(entity.getParentName())
                 .build();
-        return dto;
     }
 
 
