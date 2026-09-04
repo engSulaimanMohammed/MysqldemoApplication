@@ -37,11 +37,11 @@ public class StudentController {
     }
 
 
-    @GetMapping("getAll")
-    public List<StudentDTO> getAllStudents() {
-        List<StudentDTO> students = StudentDTO.convertToDTO(studentService.getAllStudents());
-        return students;
+    @GetMapping("/getAll")
+    public List<StudentDTO> getAll() {
+        return StudentDTO.convertToDTO(studentService.getAllStudents());
     }
+
 
 
     @GetMapping("getById")
